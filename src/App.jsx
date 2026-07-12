@@ -1385,13 +1385,13 @@ export default function App() {
 
                             <div className="grid grid-cols-2 gap-3 mb-4">
                                 <div className="bg-gradient-to-br from-[#ebdcd3]/30 to-[#faf6f0] p-4 rounded-2xl border border-[#ebdcd3] text-center">
-                                    <span className="text-[9px] text-[#cc5a37] font-bold block mb-1">📝 텍스트 분석 결과</span>
+                                    <span className="text-[9px] text-[#cc5a37] font-bold block mb-1">📝 이성적 결과</span>
                                     <h3 className="text-3xl font-black text-[#2d221c]">{textResult}</h3>
                                     <span className="text-[9px] text-[#7d6e65] block mt-1">{mbtiDetails[textResult]?.title || ''}</span>
                                 </div>
 
                                 <div className="bg-gradient-to-br from-[#decbb7]/30 to-[#faf6f0] p-4 rounded-2xl border border-[#ebdcd3] text-center">
-                                    <span className="text-[9px] text-[#936b4e] font-bold block mb-1">🎨 이미지 무의식 결과</span>
+                                    <span className="text-[9px] text-[#936b4e] font-bold block mb-1">🎨 무의식결과</span>
                                     <h3 className="text-3xl font-black text-[#2d221c]">{imageResult}</h3>
                                     <span className="text-[9px] text-[#7d6e65] block mt-1">{mbtiDetails[imageResult]?.title || ''}</span>
                                 </div>
