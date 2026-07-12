@@ -1157,7 +1157,7 @@ export default function App() {
                                 >
                                     <div className="flex justify-between items-center mb-1">
                                         <span className="text-sm font-extrabold text-[#2d221c] group-hover:text-[#cc5a37] flex items-center gap-1.5 font-bold font-sans">
-                                            🎨 무의식 예술 카드 검사 (글씨 읽기 X)
+                                            🎨 무의식 예술 카드 검사
                                         </span>
                                         <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold font-sans ${imageResult ? 'bg-[#cc5a37]/20 text-[#cc5a37]' : 'bg-[#f7f2ea] text-[#7d6e65]'}`}>
                                             {imageResult ? `완료: ${imageResult}` : '미완료 ⏳'}
