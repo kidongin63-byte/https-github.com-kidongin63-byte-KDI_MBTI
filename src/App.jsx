@@ -841,8 +841,58 @@ export default function App() {
             };
         };
 
+        const calcCumulativePercentages = () => {
+            if (!savedProfile || !savedProfile.attempts || savedProfile.attempts.length === 0) return null;
+
+            const score = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+            let count = 0;
+
+            savedProfile.attempts.forEach(att => {
+                if (att.answers && Array.isArray(att.answers)) {
+                    att.answers.forEach(ans => {
+                        if (score[ans] !== undefined) {
+                            score[ans]++;
+                            count++;
+                        }
+                    });
+                }
+            });
+
+            if (count === 0) return null;
+
+            const getPct = (v1, v2) => {
+                const total = v1 + v2;
+                if (total === 0) return 50;
+                return Math.round((v1 / total) * 100);
+            };
+
+            const E = getPct(score.E, score.I);
+            const I = 100 - E;
+            const S = getPct(score.S, score.N);
+            const N = 100 - S;
+            const T = getPct(score.T, score.F);
+            const F = 100 - T;
+            const J = getPct(score.J, score.P);
+            const P = 100 - J;
+
+            let mbti = "";
+            mbti += (E >= I) ? "E" : "I";
+            mbti += (S >= N) ? "S" : "N";
+            mbti += (T >= F) ? "T" : "F";
+            mbti += (J >= P) ? "J" : "P";
+
+            return {
+                mbti,
+                EI: { E, I },
+                SN: { S, N },
+                TF: { T, F },
+                JP: { J, P }
+            };
+        };
+
         const textMetrics = calcPercentages(savedProfile?.textAnswers || []);
         const imageMetrics = calcPercentages(savedProfile?.imageAnswers || []);
+        const cumulativeMetrics = calcCumulativePercentages();
 
         // 이성과 무의식의 4대 척도(EI, SN, TF, JP) 간 절대 수치 차이를 계산하고 자아 유사성을 점수화
         const scoreDiff = (
@@ -876,6 +926,7 @@ export default function App() {
                 desc: "글자를 분석해 차분한 논리적 결론을 내릴 때와, 감각적인 미술 카드를 보고 마음을 열 때의 본능이 완전하게 일치합니다. 대인관계에서 스스로 세운 중심선이 매우 확고한 건강한 정신력의 상징입니다.",
                 textMetrics,
                 imageMetrics,
+                cumulativeMetrics,
                 similarityScore,
                 similarityLabel,
                 similarityColor
@@ -915,6 +966,7 @@ export default function App() {
             details: differences,
             textMetrics,
             imageMetrics,
+            cumulativeMetrics,
             similarityScore,
             similarityLabel,
             similarityColor
@@ -1397,6 +1449,65 @@ export default function App() {
                                 </div>
                             </div>
 
+                            {analysis.cumulativeMetrics && (
+                                <div className="bg-[#faf6f0] rounded-2xl p-4 border border-[#ebdcd3] mb-4 space-y-3.5">
+                                    <div className="flex justify-between items-center pb-2 border-b border-[#ebdcd3]/60">
+                                        <h4 className="text-xs font-black text-[#2d221c]">📊 백분율 성향 {analysis.cumulativeMetrics.mbti}</h4>
+                                        <span className="text-[8.5px] bg-[#cc5a37]/10 text-[#cc5a37] px-2 py-0.5 rounded-full font-bold border border-[#cc5a37]/20 uppercase">
+                                            종합 성향
+                                        </span>
+                                    </div>
+
+                                    {/* EI Dimension */}
+                                    <div className="space-y-1">
+                                        <div className="flex justify-between text-[9px] text-[#7d6e65] font-extrabold px-0.5">
+                                            <span>외향(E) {analysis.cumulativeMetrics.EI.E}%</span>
+                                            <span>내향(I) {analysis.cumulativeMetrics.EI.I}%</span>
+                                        </div>
+                                        <div className="w-full bg-[#ebdcd3]/45 h-3 rounded-full overflow-hidden flex relative">
+                                            <div className="bg-[#cc5a37] h-full transition-all duration-300" style={{ width: `${analysis.cumulativeMetrics.EI.E}%` }}></div>
+                                            <div className="bg-[#ebdcd3] h-full transition-all duration-300" style={{ width: `${analysis.cumulativeMetrics.EI.I}%` }}></div>
+                                        </div>
+                                    </div>
+
+                                    {/* SN Dimension */}
+                                    <div className="space-y-1">
+                                        <div className="flex justify-between text-[9px] text-[#7d6e65] font-extrabold px-0.5">
+                                            <span>감각(S) {analysis.cumulativeMetrics.SN.S}%</span>
+                                            <span>직관(N) {analysis.cumulativeMetrics.SN.N}%</span>
+                                        </div>
+                                        <div className="w-full bg-[#ebdcd3]/45 h-3 rounded-full overflow-hidden flex relative">
+                                            <div className="bg-[#cc5a37] h-full transition-all duration-300" style={{ width: `${analysis.cumulativeMetrics.SN.S}%` }}></div>
+                                            <div className="bg-[#ebdcd3] h-full transition-all duration-300" style={{ width: `${analysis.cumulativeMetrics.SN.N}%` }}></div>
+                                        </div>
+                                    </div>
+
+                                    {/* TF Dimension */}
+                                    <div className="space-y-1">
+                                        <div className="flex justify-between text-[9px] text-[#7d6e65] font-extrabold px-0.5">
+                                            <span>사고(T) {analysis.cumulativeMetrics.TF.T}%</span>
+                                            <span>감정(F) {analysis.cumulativeMetrics.TF.F}%</span>
+                                        </div>
+                                        <div className="w-full bg-[#ebdcd3]/45 h-3 rounded-full overflow-hidden flex relative">
+                                            <div className="bg-[#cc5a37] h-full transition-all duration-300" style={{ width: `${analysis.cumulativeMetrics.TF.T}%` }}></div>
+                                            <div className="bg-[#ebdcd3] h-full transition-all duration-300" style={{ width: `${analysis.cumulativeMetrics.TF.F}%` }}></div>
+                                        </div>
+                                    </div>
+
+                                    {/* JP Dimension */}
+                                    <div className="space-y-1">
+                                        <div className="flex justify-between text-[9px] text-[#7d6e65] font-extrabold px-0.5">
+                                            <span>판단(J) {analysis.cumulativeMetrics.JP.J}%</span>
+                                            <span>인식(P) {analysis.cumulativeMetrics.JP.P}%</span>
+                                        </div>
+                                        <div className="w-full bg-[#ebdcd3]/45 h-3 rounded-full overflow-hidden flex relative">
+                                            <div className="bg-[#cc5a37] h-full transition-all duration-300" style={{ width: `${analysis.cumulativeMetrics.JP.J}%` }}></div>
+                                            <div className="bg-[#ebdcd3] h-full transition-all duration-300" style={{ width: `${analysis.cumulativeMetrics.JP.P}%` }}></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
                             <div className="bg-[#faf6f0] rounded-2xl p-4 border border-[#ebdcd3] mb-4 space-y-4">
                                 <div className="flex justify-between items-center pb-2 border-b border-[#ebdcd3]/60">
                                     <h4 className="text-xs font-black text-[#2d221c]">📊 이성 vs 무의식 척도 비교</h4>
@@ -1538,7 +1649,7 @@ export default function App() {
                                         onClick={() => setGameState('intro')}
                                         className="flex-1 py-3 bg-[#f7f2ea] hover:bg-[#ebdcd0] text-[#7d6e65] font-bold rounded-xl text-xs active:scale-[0.98] transition-all border border-[#ebdcd3]"
                                     >
-                                        처음화면 🏠
+                                        이전화면 🏠
                                     </button>
                                     <button
                                         onClick={() => {
@@ -1672,7 +1783,7 @@ export default function App() {
                                 onClick={() => setGameState('intro')}
                                 className="w-full py-3.5 bg-[#f7f2ea] hover:bg-[#ebdcd0] text-[#7d6e65] border border-[#ebdcd3] font-extrabold text-xs rounded-xl active:scale-[0.98] transition-all font-sans"
                             >
-                                로비 홈으로 돌아가기 🏠
+                                돌아가기 🏠
                             </button>
                         </div>
                     )}
