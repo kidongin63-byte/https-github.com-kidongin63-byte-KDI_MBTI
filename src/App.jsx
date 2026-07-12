@@ -1178,14 +1178,14 @@ export default function App() {
                                     className="w-full p-4 bg-[#fbeee8]/60 hover:bg-[#fbeee8] rounded-2xl border border-[#ebdcd3] hover:border-[#f0cbbd] text-left transition-all group font-sans"
                                 >
                                     <div className="flex justify-between items-center mb-1">
-                                        <span className="text-sm font-extrabold text-[#2d221c] group-hover:text-[#cc5a37] flex items-center gap-1.5 font-bold font-sans">
+                                        <span className="text-xs font-black text-[#2d221c] group-hover:text-[#cc5a37] flex items-center gap-1.5 font-bold font-sans">
                                             📝 텍스트 이성 자아 검사
                                         </span>
-                                        <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold font-sans ${textResult ? 'bg-[#cc5a37]/20 text-[#cc5a37]' : 'bg-[#f7f2ea] text-[#7d6e65]'}`}>
+                                        <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold whitespace-nowrap font-sans ${textResult ? 'bg-[#cc5a37]/20 text-[#cc5a37]' : 'bg-[#f7f2ea] text-[#7d6e65]'}`}>
                                             {textResult ? `완료: ${textResult}` : '미완료 ⏳'}
                                         </span>
                                     </div>
-                                    <p className="text-[10px] text-[#7d6e65] leading-relaxed font-sans">
+                                    <p className="text-[10px] text-[#7d6e65] leading-relaxed font-sans font-light">
                                         좌뇌의 문장 구조 파악 능력을 자극하여 평소 내가 추구하는 가치관을 이성적인 문자로 매칭시킵니다.
                                     </p>
                                 </button>
@@ -1195,10 +1195,10 @@ export default function App() {
                                     className="w-full p-4 bg-[#f7f2ea]/60 hover:bg-[#ebdcd0] rounded-2xl border border-[#ebdcd3] hover:border-[#cc5a37]/45 text-left transition-all group font-sans"
                                 >
                                     <div className="flex justify-between items-center mb-1">
-                                        <span className="text-sm font-extrabold text-[#2d221c] group-hover:text-[#cc5a37] flex items-center gap-1.5 font-bold font-sans">
+                                        <span className="text-xs font-black text-[#2d221c] group-hover:text-[#cc5a37] flex items-center gap-1.5 font-bold font-sans">
                                             🎨 무의식 예술 카드 검사
                                         </span>
-                                        <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold font-sans ${imageResult ? 'bg-[#cc5a37]/20 text-[#cc5a37]' : 'bg-[#f7f2ea] text-[#7d6e65]'}`}>
+                                        <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold whitespace-nowrap font-sans ${imageResult ? 'bg-[#cc5a37]/20 text-[#cc5a37]' : 'bg-[#f7f2ea] text-[#7d6e65]'}`}>
                                             {imageResult ? `완료: ${imageResult}` : '미완료 ⏳'}
                                         </span>
                                     </div>
