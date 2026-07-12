@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kdi-mbti-cache-v2';
+const CACHE_NAME = 'kdi-mbti-cache-v3';
 const ASSETS = [
     './',
     'index.html',
@@ -31,16 +31,28 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+    if (event.request.method !== 'GET') return;
+
     event.respondWith(
-        caches.match(event.request).then((cachedResponse) => {
-            if (cachedResponse) {
-                return cachedResponse;
-            }
-            return fetch(event.request).catch(() => {
-                if (event.request.mode === 'navigate') {
-                    return caches.match('index.html');
+        fetch(event.request)
+            .then((networkResponse) => {
+                if (networkResponse && networkResponse.status === 200) {
+                    const responseCopy = networkResponse.clone();
+                    caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(event.request, responseCopy);
+                    });
                 }
-            });
-        })
+                return networkResponse;
+            })
+            .catch(() => {
+                return caches.match(event.request).then((cachedResponse) => {
+                    if (cachedResponse) {
+                        return cachedResponse;
+                    }
+                    if (event.request.mode === 'navigate') {
+                        return caches.match('index.html');
+                    }
+                });
+            })
     );
 });
