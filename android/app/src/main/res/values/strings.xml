@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">KDI의 MBTI 분석기</string>
-    <string name="title_activity_main">KDI의 MBTI 분석기</string>
+    <string name="app_name">KDI MBTI</string>
+    <string name="title_activity_main">KDI MBTI</string>
     <string name="package_name">com.kdi.bpti</string>
     <string name="custom_url_scheme">com.kdi.bpti</string>
 </resources>
