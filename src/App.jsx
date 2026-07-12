@@ -1538,7 +1538,7 @@ export default function App() {
                                         onClick={() => setGameState('intro')}
                                         className="flex-1 py-3 bg-[#f7f2ea] hover:bg-[#ebdcd0] text-[#7d6e65] font-bold rounded-xl text-xs active:scale-[0.98] transition-all border border-[#ebdcd3]"
                                     >
-                                        로비로 나가기 🏠
+                                        처음화면 🏠
                                     </button>
                                     <button
                                         onClick={() => {
