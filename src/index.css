@@ -37,13 +37,13 @@ body {
 
 /* Override Tailwind absolute pixel utility classes in App.jsx */
 .text-\[9px\] {
-    font-size: 17px !important;
+    font-size: 14px !important;
 }
 
 .text-\[10px\] {
-    font-size: 19px !important;
+    font-size: 15px !important;
 }
 
 .text-\[11px\] {
-    font-size: 21px !important;
+    font-size: 17px !important;
 }
