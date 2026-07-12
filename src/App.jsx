@@ -1130,7 +1130,7 @@ export default function App() {
                             <h2 className="text-lg sm:text-xl font-black text-[#2d221c] leading-tight mb-2 font-sans">두개의 거울을 깨워봐요</h2>
                             <div className="text-[10px] text-[#7d6e65] space-y-1 mb-6 font-sans font-medium leading-relaxed">
                                 <p>5일에 한번씩 총 각각 10회 가능</p>
-                                <p className="text-[9px] text-[#a3948b]">(누적으로 자신의 성향에 조금더 가까이 갑니다)</p>
+                                <p className="text-[9px] text-[#a3948b]">(누적수치는 자신의 성향에 조금더 가까워 집니다)</p>
                             </div>
 
                             <div className="space-y-3 mb-6 font-sans">
