@@ -45,7 +45,8 @@
       "purpose": "any maskable"
     }
   ],
-  "start_url": "/",
+  "start_url": "/https-github.com-kidongin63-byte-KDI_MBTI/",
+  "scope": "/https-github.com-kidongin63-byte-KDI_MBTI/",
   "background_color": "#f7f2ea",
   "theme_color": "#cc5a37",
   "display": "standalone",
