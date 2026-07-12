@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { questions, mbtiDetails } from './questions';
 
 // ==========================================
@@ -466,7 +466,15 @@ export function TrendChart({ attempts }) {
 }
 
 export default function App() {
+    const scrollContainerRef = useRef(null);
     const [gameState, setGameState] = useState('login'); // login, intro, play, result, compare, dashboard
+
+    useEffect(() => {
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollTop = 0;
+        }
+    }, [gameState]);
+
     const [selectedMode, setSelectedMode] = useState('text'); // text, image (visual)
     const [currentIdx, setCurrentIdx] = useState(0);
     const [answers, setAnswers] = useState([]);
@@ -965,7 +973,7 @@ export default function App() {
             <div className="absolute bottom-10 right-10 w-96 h-96 bg-[#e28a67]/5 rounded-full blur-3xl pointer-events-none"></div>
 
             {/* 9:16 aspect ratio smartphone container */}
-            <div className="w-full h-screen sm:h-[840px] sm:max-h-[92vh] sm:w-[472.5px] sm:aspect-[9/16] bg-[#f7f2ea] sm:rounded-[40px] sm:shadow-2xl sm:border-[10px] sm:border-[#382b24] relative flex flex-col justify-start overflow-y-auto no-scrollbar">
+            <div ref={scrollContainerRef} className="w-full h-screen sm:h-[840px] sm:max-h-[92vh] sm:w-[472.5px] sm:aspect-[9/16] bg-[#f7f2ea] sm:rounded-[40px] sm:shadow-2xl sm:border-[10px] sm:border-[#382b24] relative flex flex-col justify-start overflow-y-auto no-scrollbar">
 
                 {/* Background elements inside the mobile frame */}
                 <div className="absolute top-10 left-10 w-64 h-64 bg-[#cc5a37]/5 rounded-full blur-2xl pointer-events-none"></div>
@@ -1062,7 +1070,7 @@ export default function App() {
                 )}
 
                 {/* Inner Content Area */}
-                <div className="w-full flex-1 flex flex-col items-center justify-center p-4 sm:p-5 relative z-10 min-h-0">
+                <div className={`w-full flex-1 flex flex-col items-center ${(gameState === 'compare' || gameState === 'dashboard') ? 'justify-start' : 'justify-center'} p-4 sm:p-5 relative z-10 min-h-0`}>
 
                     {gameState === 'login' && (
                         <div className="max-w-md w-full bg-white rounded-3xl p-7 shadow-xl border border-[#ebdcd3] relative z-10 text-center animate-fade-in font-sans">
