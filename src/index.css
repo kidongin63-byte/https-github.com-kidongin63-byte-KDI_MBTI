@@ -29,3 +29,21 @@ body {
     -ms-user-select: none;
     user-select: none;
 }
+
+/* Remove grey selection highlights on tap for native-like feel */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Override Tailwind absolute pixel utility classes in App.jsx */
+.text-\[9px\] {
+    font-size: 17px !important;
+}
+
+.text-\[10px\] {
+    font-size: 19px !important;
+}
+
+.text-\[11px\] {
+    font-size: 21px !important;
+}
