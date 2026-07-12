@@ -1045,7 +1045,7 @@ export default function App() {
 
                             <form onSubmit={handleLoginSubmit} className="space-y-4 text-left font-sans">
                                 <div>
-                                    <label className="block text-xs font-bold text-[#4c3e38] mb-1.5 font-sans">👤 보관함 별명 (중복 가능)</label>
+                                    <label className="block text-xs font-bold text-[#4c3e38] mb-1.5 font-sans">👤 호칭 또는 애칭 (중복 가능)</label>
                                     <input
                                         type="text"
                                         placeholder="내 별명 입력 (예: 해피멍멍이)"
