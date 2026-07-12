@@ -513,6 +513,25 @@ export default function App() {
         return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
     }, []);
 
+    // 자동 로그인 세션 복구 마운트 로드
+    useEffect(() => {
+        try {
+            const lastLoginId = localStorage.getItem('kdi_mbti_last_logged_in_id');
+            if (lastLoginId) {
+                const savedDataStr = localStorage.getItem(lastLoginId);
+                if (savedDataStr) {
+                    const data = JSON.parse(savedDataStr);
+                    setTextResult(data.textResult || null);
+                    setImageResult(data.imageResult || null);
+                    setSavedProfile(data);
+                    setGameState('intro');
+                }
+            }
+        } catch (err) {
+            console.error("Failed to restore login session:", err);
+        }
+    }, []);
+
     const handleInstallApp = async () => {
         if (!deferredPrompt) return;
         deferredPrompt.prompt();
@@ -549,6 +568,7 @@ export default function App() {
                     setTextResult(data.textResult || null);
                     setImageResult(data.imageResult || null);
                     setSavedProfile(data);
+                    localStorage.setItem('kdi_mbti_last_logged_in_id', docId);
 
                     const savedTextAnswers = data.textAnswers || [];
                     const savedImageAnswers = data.imageAnswers || [];
@@ -623,6 +643,7 @@ export default function App() {
                     setTextResult(null);
                     setImageResult(null);
                     setSavedProfile(newProfile);
+                    localStorage.setItem('kdi_mbti_last_logged_in_id', docId);
                     setGameState('intro');
                     triggerToast("KDI 개인 자아 보관함이 생성되었습니다! 🌱");
                 }
@@ -1018,9 +1039,6 @@ export default function App() {
                                 <KdiLogo className="w-20 h-20" />
                             </div>
 
-                            <span className="inline-block px-3 py-1 bg-[#cc5a37]/10 text-[#cc5a37] text-[10px] font-bold rounded-full mb-3 tracking-widest border border-[#cc5a37]/20 uppercase">
-                                PWA Local Architecture 📡
-                            </span>
                             <h1 className="text-lg sm:text-xl font-black text-[#2d221c] leading-tight mb-6 font-sans">
                                 KDI의 <span className="bg-gradient-to-r from-[#cc5a37] to-[#e28a67] bg-clip-text text-transparent font-sans">MBTI 분석기</span>
                             </h1>
@@ -1096,6 +1114,7 @@ export default function App() {
                                         setNickname('');
                                         setPin('');
                                         setSavedProfile(null);
+                                        localStorage.removeItem('kdi_mbti_last_logged_in_id');
                                         setGameState('login');
                                         triggerToast("보관함을 닫고 안전하게 탈출했습니다.");
                                     }}
