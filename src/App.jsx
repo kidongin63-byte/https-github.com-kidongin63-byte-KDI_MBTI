@@ -1106,7 +1106,7 @@ export default function App() {
                                     <KdiLogo className="w-10 h-10" />
                                     <div>
                                         <span className="text-[9px] text-[#7d6e65] block uppercase font-bold font-sans">KDI Member</span>
-                                        <span className="text-sm font-black text-[#2d221c] font-sans">{savedProfile.nickname} <span className="text-[#7d6e65] font-normal">님의 보관함</span></span>
+                                        <span className="text-sm font-black text-[#2d221c] font-sans">{savedProfile.nickname} <span className="text-[#7d6e65] font-normal">님의 거울</span></span>
                                     </div>
                                 </div>
                                 <button
