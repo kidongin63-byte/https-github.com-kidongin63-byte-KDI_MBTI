@@ -1,13 +1,9 @@
 const CACHE_NAME = 'kdi-mbti-cache-v1';
 const ASSETS = [
-    '/',
-    '/index.html',
-    '/manifest.json',
-    '/icon.svg',
-    '/src/main.jsx',
-    '/src/App.jsx',
-    '/src/questions.js',
-    '/src/index.css'
+    './',
+    'index.html',
+    'manifest.json',
+    'icon.png'
 ];
 
 self.addEventListener('install', (event) => {
