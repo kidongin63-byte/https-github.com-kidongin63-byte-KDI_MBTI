@@ -1021,12 +1021,9 @@ export default function App() {
                             <span className="inline-block px-3 py-1 bg-[#cc5a37]/10 text-[#cc5a37] text-[10px] font-bold rounded-full mb-3 tracking-widest border border-[#cc5a37]/20 uppercase">
                                 PWA Local Architecture 📡
                             </span>
-                            <h1 className="text-2xl md:text-3xl font-black text-[#2d221c] leading-tight mb-2 font-sans">
+                            <h1 className="text-lg sm:text-xl font-black text-[#2d221c] leading-tight mb-6 font-sans">
                                 KDI의 <span className="bg-gradient-to-r from-[#cc5a37] to-[#e28a67] bg-clip-text text-transparent font-sans">MBTI 분석기</span>
                             </h1>
-                            <p className="text-[#7d6e65] text-xs mb-6 leading-relaxed font-sans">
-                                글과 그림 카드를 비교 분석하고, 기기 전용 로컬 데이터베이스에 안전하게 보관하는 다차원 입체 심리 도구입니다.
-                            </p>
 
                             <form onSubmit={handleLoginSubmit} className="space-y-4 text-left font-sans">
                                 <div>
