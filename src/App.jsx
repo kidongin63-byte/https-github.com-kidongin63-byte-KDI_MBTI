@@ -1105,13 +1105,10 @@ export default function App() {
                                 </button>
                             </div>
 
-                            <span className="inline-block px-3 py-1 bg-[#cc5a37]/10 text-[#cc5a37] text-[10px] font-bold rounded-full mb-3 uppercase tracking-widest border border-[#cc5a37]/20">
-                                Double Personality Quest 🧬
-                            </span>
-                            <h2 className="text-xl font-black text-[#2d221c] leading-tight mb-2 font-sans">두 개의 내적 거울을 깨우세요</h2>
-                            <p className="text-[#7d6e65] text-xs mb-6 leading-relaxed font-sans">
-                                나를 이해하는 두 개의 방식! 이성적인 글로 푸는 검사와 본능적인 그림만 터치하며 내려가는 초직관적 성향 검사를 완성했습니다.
-                            </p>
+                            <div className="flex justify-center mb-4">
+                                <KdiLogo className="w-16 h-16" />
+                            </div>
+                            <h2 className="text-lg sm:text-xl font-black text-[#2d221c] leading-tight mb-6 font-sans">두개의 거울을 깨워봐요</h2>
 
                             <div className="space-y-3 mb-6 font-sans">
                                 <button
