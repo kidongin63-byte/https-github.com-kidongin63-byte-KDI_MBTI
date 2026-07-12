@@ -1067,7 +1067,7 @@ export default function App() {
                                     {loading ? (
                                         <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
                                     ) : (
-                                        <span>비밀 보관함 열기 🔓</span>
+                                        <span>시작 🔓</span>
                                     )}
                                 </button>
                             </form>
