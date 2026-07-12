@@ -836,13 +836,41 @@ export default function App() {
         const textMetrics = calcPercentages(savedProfile?.textAnswers || []);
         const imageMetrics = calcPercentages(savedProfile?.imageAnswers || []);
 
+        // 이성과 무의식의 4대 척도(EI, SN, TF, JP) 간 절대 수치 차이를 계산하고 자아 유사성을 점수화
+        const scoreDiff = (
+            Math.abs((textMetrics?.EI?.E || 0) - (imageMetrics?.EI?.E || 0)) +
+            Math.abs((textMetrics?.SN?.S || 0) - (imageMetrics?.SN?.S || 0)) +
+            Math.abs((textMetrics?.TF?.T || 0) - (imageMetrics?.TF?.T || 0)) +
+            Math.abs((textMetrics?.JP?.J || 0) - (imageMetrics?.JP?.J || 0))
+        ) / 4;
+        const similarityScore = Math.round(100 - scoreDiff);
+
+        let similarityLabel = "";
+        let similarityColor = "";
+        if (similarityScore >= 90) {
+            similarityLabel = "일란성 쌍둥이 자아 💎";
+            similarityColor = "text-[#cc5a37] bg-[#cc5a37]/10 border-[#cc5a37]/20";
+        } else if (similarityScore >= 70) {
+            similarityLabel = "상호 보완적 융합 자아 🤝";
+            similarityColor = "text-[#936b4e] bg-[#936b4e]/10 border-[#936b4e]/20";
+        } else if (similarityScore >= 50) {
+            similarityLabel = "이중 매력의 반사 거울 자아 🪞";
+            similarityColor = "text-[#8a7261] bg-[#8a7261]/10 border-[#8a7261]/20";
+        } else {
+            similarityLabel = "독립적 멀티 페르소나 자아 🎭";
+            similarityColor = "text-[#b2573d] bg-[#b2573d]/10 border-[#b2573d]/20";
+        }
+
         if (textResult === imageResult) {
             return {
                 status: "perfect_match",
                 title: "온전한 내면의 지배자! 일란성 자아 💎",
                 desc: "글자를 분석해 차분한 논리적 결론을 내릴 때와, 감각적인 미술 카드를 보고 마음을 열 때의 본능이 완전하게 일치합니다. 대인관계에서 스스로 세운 중심선이 매우 확고한 건강한 정신력의 상징입니다.",
                 textMetrics,
-                imageMetrics
+                imageMetrics,
+                similarityScore,
+                similarityLabel,
+                similarityColor
             };
         }
 
@@ -862,7 +890,7 @@ export default function App() {
         if (textResult[2] !== imageResult[2]) {
             differences.push({
                 trait: "T(사고) vs F(감정) : 이성과 감정의 줄다리기",
-                reason: "상황이 글자로 들어올 때는 옳고 그름을 가리거나 논리적 해법(T)을 고르려 통제하지만, 다정한 꽃잎이나 마음 곡선 일러스트 앞에서는 나도 모르게 가슴이 풀어지며 공감과 배려(F)를 선택했기 때문입니다."
+                reason: "상황이 글자로 들어올 때는 옳고 그름을 가리거나 논리적 해법(T)을 고르려 통제하지만, 다정한 꽃잎이나 마음 곡선 일러스트 앞에서는 나도 모르게 가슴이 풀어지며 공감 및 배려(F)를 선택했기 때문입니다."
             });
         }
         if (textResult[3] !== imageResult[3]) {
@@ -878,7 +906,10 @@ export default function App() {
             desc: "글을 이해하는 좌뇌(이성/분석)와 그림을 느끼는 우뇌(무의식/영감)가 서로 독창적인 심리 지도를 구성했습니다. 이는 이상한 상태가 아니라 주위 자극의 질감에 맞게 적응하는 뇌의 유연한 회복 탄력성을 의미합니다.",
             details: differences,
             textMetrics,
-            imageMetrics
+            imageMetrics,
+            similarityScore,
+            similarityLabel,
+            similarityColor
         };
     };
 
@@ -1358,50 +1389,107 @@ export default function App() {
                                 </div>
                             </div>
 
-                            <div className="bg-[#faf6f0] rounded-2xl p-4 border border-[#ebdcd3] mb-4 space-y-3">
-                                <h4 className="text-xs font-bold text-[#2d221c]">📊 백분율 성향 분포 상세</h4>
+                            <div className="bg-[#faf6f0] rounded-2xl p-4 border border-[#ebdcd3] mb-4 space-y-4">
+                                <div className="flex justify-between items-center pb-2 border-b border-[#ebdcd3]/60">
+                                    <h4 className="text-xs font-black text-[#2d221c]">📊 이성 vs 무의식 척도 비교</h4>
+                                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold border ${analysis.similarityColor}`}>
+                                        유사도 {analysis.similarityScore}% : {analysis.similarityLabel}
+                                    </span>
+                                </div>
 
-                                <div>
-                                    <div className="flex justify-between text-[10px] text-[#7d6e65] mb-1">
-                                        <span>외향(E) {analysis.textMetrics?.EI?.E}%</span>
-                                        <span>내향(I) {analysis.textMetrics?.EI?.I}%</span>
+                                {/* EI Dimension */}
+                                <div className="space-y-1.5">
+                                    <div className="flex justify-between text-[9px] text-[#7d6e65] font-extrabold">
+                                        <span>외향(E)</span>
+                                        <span>내향(I)</span>
                                     </div>
-                                    <div className="w-full bg-[#ebdcd3] h-2 rounded-full overflow-hidden flex">
-                                        <div className="bg-[#cc5a37] h-full" style={{ width: `${analysis.textMetrics?.EI?.E}%` }}></div>
-                                        <div className="bg-[#936b4e] h-full" style={{ width: `${analysis.textMetrics?.EI?.I}%` }}></div>
+                                    <div className="space-y-1">
+                                        <div className="w-full bg-[#ebdcd3]/45 h-3.5 rounded-full overflow-hidden flex relative">
+                                            <div className="bg-[#cc5a37] h-full" style={{ width: `${analysis.textMetrics?.EI?.E}%` }}></div>
+                                            <div className="bg-[#ebdcd3] h-full" style={{ width: `${analysis.textMetrics?.EI?.I}%` }}></div>
+                                            <span className="absolute inset-0 flex items-center justify-center text-[7.5px] font-bold text-white drop-shadow-sm pointer-events-none">
+                                                📝 이성: E {analysis.textMetrics?.EI?.E}% vs I {analysis.textMetrics?.EI?.I}%
+                                            </span>
+                                        </div>
+                                        <div className="w-full bg-[#ebdcd3]/45 h-3.5 rounded-full overflow-hidden flex relative">
+                                            <div className="bg-[#936b4e] h-full" style={{ width: `${analysis.imageMetrics?.EI?.E}%` }}></div>
+                                            <div className="bg-[#ebdcd3] h-full" style={{ width: `${analysis.imageMetrics?.EI?.I}%` }}></div>
+                                            <span className="absolute inset-0 flex items-center justify-center text-[7.5px] font-bold text-white drop-shadow-sm pointer-events-none">
+                                                🎨 무의식: E {analysis.imageMetrics?.EI?.E}% vs I {analysis.imageMetrics?.EI?.I}%
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div>
-                                    <div className="flex justify-between text-[10px] text-[#7d6e65] mb-1">
-                                        <span>감각(S) {analysis.textMetrics?.SN?.S}%</span>
-                                        <span>직관(N) {analysis.textMetrics?.SN?.N}%</span>
+                                {/* SN Dimension */}
+                                <div className="space-y-1.5">
+                                    <div className="flex justify-between text-[9px] text-[#7d6e65] font-extrabold">
+                                        <span>감각(S)</span>
+                                        <span>직관(N)</span>
                                     </div>
-                                    <div className="w-full bg-[#ebdcd3] h-2 rounded-full overflow-hidden flex">
-                                        <div className="bg-[#cc5a37] h-full" style={{ width: `${analysis.textMetrics?.SN?.S}%` }}></div>
-                                        <div className="bg-[#936b4e] h-full" style={{ width: `${analysis.textMetrics?.SN?.N}%` }}></div>
+                                    <div className="space-y-1">
+                                        <div className="w-full bg-[#ebdcd3]/45 h-3.5 rounded-full overflow-hidden flex relative">
+                                            <div className="bg-[#cc5a37] h-full" style={{ width: `${analysis.textMetrics?.SN?.S}%` }}></div>
+                                            <div className="bg-[#ebdcd3] h-full" style={{ width: `${analysis.textMetrics?.SN?.N}%` }}></div>
+                                            <span className="absolute inset-0 flex items-center justify-center text-[7.5px] font-bold text-white drop-shadow-sm pointer-events-none">
+                                                📝 이성: S {analysis.textMetrics?.SN?.S}% vs N {analysis.textMetrics?.SN?.N}%
+                                            </span>
+                                        </div>
+                                        <div className="w-full bg-[#ebdcd3]/45 h-3.5 rounded-full overflow-hidden flex relative">
+                                            <div className="bg-[#936b4e] h-full" style={{ width: `${analysis.imageMetrics?.SN?.S}%` }}></div>
+                                            <div className="bg-[#ebdcd3] h-full" style={{ width: `${analysis.imageMetrics?.SN?.N}%` }}></div>
+                                            <span className="absolute inset-0 flex items-center justify-center text-[7.5px] font-bold text-white drop-shadow-sm pointer-events-none">
+                                                🎨 무의식: S {analysis.imageMetrics?.SN?.S}% vs N {analysis.imageMetrics?.SN?.N}%
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div>
-                                    <div className="flex justify-between text-[10px] text-[#7d6e65] mb-1">
-                                        <span>사고(T) {analysis.textMetrics?.TF?.T}%</span>
-                                        <span>감정(F) {analysis.textMetrics?.TF?.F}%</span>
+                                {/* TF Dimension */}
+                                <div className="space-y-1.5">
+                                    <div className="flex justify-between text-[9px] text-[#7d6e65] font-extrabold">
+                                        <span>사고(T)</span>
+                                        <span>감정(F)</span>
                                     </div>
-                                    <div className="w-full bg-[#ebdcd3] h-2 rounded-full overflow-hidden flex">
-                                        <div className="bg-[#cc5a37] h-full" style={{ width: `${analysis.textMetrics?.TF?.T}%` }}></div>
-                                        <div className="bg-[#936b4e] h-full" style={{ width: `${analysis.textMetrics?.TF?.F}%` }}></div>
+                                    <div className="space-y-1">
+                                        <div className="w-full bg-[#ebdcd3]/45 h-3.5 rounded-full overflow-hidden flex relative">
+                                            <div className="bg-[#cc5a37] h-full" style={{ width: `${analysis.textMetrics?.TF?.T}%` }}></div>
+                                            <div className="bg-[#ebdcd3] h-full" style={{ width: `${analysis.textMetrics?.TF?.F}%` }}></div>
+                                            <span className="absolute inset-0 flex items-center justify-center text-[7.5px] font-bold text-white drop-shadow-sm pointer-events-none">
+                                                📝 이성: T {analysis.textMetrics?.TF?.T}% vs F {analysis.textMetrics?.TF?.F}%
+                                            </span>
+                                        </div>
+                                        <div className="w-full bg-[#ebdcd3]/45 h-3.5 rounded-full overflow-hidden flex relative">
+                                            <div className="bg-[#936b4e] h-full" style={{ width: `${analysis.imageMetrics?.TF?.T}%` }}></div>
+                                            <div className="bg-[#ebdcd3] h-full" style={{ width: `${analysis.imageMetrics?.TF?.F}%` }}></div>
+                                            <span className="absolute inset-0 flex items-center justify-center text-[7.5px] font-bold text-white drop-shadow-sm pointer-events-none">
+                                                🎨 무의식: T {analysis.imageMetrics?.TF?.T}% vs F {analysis.imageMetrics?.TF?.F}%
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div>
-                                    <div className="flex justify-between text-[10px] text-[#7d6e65] mb-1">
-                                        <span>판단(J) {analysis.textMetrics?.JP?.J}%</span>
-                                        <span>인식(P) {analysis.textMetrics?.JP?.P}%</span>
+                                {/* JP Dimension */}
+                                <div className="space-y-1.5">
+                                    <div className="flex justify-between text-[9px] text-[#7d6e65] font-extrabold">
+                                        <span>판단(J)</span>
+                                        <span>인식(P)</span>
                                     </div>
-                                    <div className="w-full bg-[#ebdcd3] h-2 rounded-full overflow-hidden flex">
-                                        <div className="bg-[#cc5a37] h-full" style={{ width: `${analysis.textMetrics?.JP?.J}%` }}></div>
-                                        <div className="bg-[#936b4e] h-full" style={{ width: `${analysis.textMetrics?.JP?.P}%` }}></div>
+                                    <div className="space-y-1">
+                                        <div className="w-full bg-[#ebdcd3]/45 h-3.5 rounded-full overflow-hidden flex relative">
+                                            <div className="bg-[#cc5a37] h-full" style={{ width: `${analysis.textMetrics?.JP?.J}%` }}></div>
+                                            <div className="bg-[#ebdcd3] h-full" style={{ width: `${analysis.textMetrics?.JP?.P}%` }}></div>
+                                            <span className="absolute inset-0 flex items-center justify-center text-[7.5px] font-bold text-white drop-shadow-sm pointer-events-none">
+                                                📝 이성: J {analysis.textMetrics?.JP?.J}% vs P {analysis.textMetrics?.JP?.P}%
+                                            </span>
+                                        </div>
+                                        <div className="w-full bg-[#ebdcd3]/45 h-3.5 rounded-full overflow-hidden flex relative">
+                                            <div className="bg-[#936b4e] h-full" style={{ width: `${analysis.imageMetrics?.JP?.J}%` }}></div>
+                                            <div className="bg-[#ebdcd3] h-full" style={{ width: `${analysis.imageMetrics?.JP?.P}%` }}></div>
+                                            <span className="absolute inset-0 flex items-center justify-center text-[7.5px] font-bold text-white drop-shadow-sm pointer-events-none">
+                                                🎨 무의식: J {analysis.imageMetrics?.JP?.J}% vs P {analysis.imageMetrics?.JP?.P}%
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
